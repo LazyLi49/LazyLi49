@@ -25,6 +25,15 @@ jobs:
         id: pages
         uses: actions/configure-pages@v5
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install JS dependencies
+        run: |
+          npm ci || npm install
+
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
@@ -32,7 +41,7 @@ jobs:
           extended: true
 
       - name: Build
-        run: hugo --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
+        run: hugo --gc --minify --enableGitInfo --baseURL "${{ steps.pages.outputs.base_url }}/"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
